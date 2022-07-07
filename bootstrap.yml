@@ -1,0 +1,43 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+          - name: install updates (CentOS)
+            tags: always
+            dnf:
+                    update_only: yes
+                    update_cache: yes
+            when: ansible_distribution == "CentOS"
+
+          - name: install updates (Ubuntu)
+            tags: always
+            apt:
+                    upgrade: dist
+                    update_cache: yes
+            when: ansible_version == "Ubuntu"
+
+- hosts: all
+  become: true
+  tasks:
+          - name: create moris user
+            tags: always
+            user:
+                    name: moris
+                    groups: root
+
+          - name: add ssh key for moris
+            tags: always
+            authorized_key:
+                    user: moris
+                    key: "ssh-ed25519 AAAC3NzaADGB1gaAAAAIDKMFIafzQFalc0RyoTvjFrtsasR4R2FIlOsvQxOfg ansible"
+          
+          - name: add sudo file for moris
+            tags: always
+            copy:
+                    src: sudoer_moris
+                    dest: /etc/sudoesr.d/moris
+                    owner: root
+                    group: root
+                    mode: 0440
+

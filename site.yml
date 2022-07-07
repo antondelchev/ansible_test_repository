@@ -3,20 +3,29 @@
 - hosts: all
   become: true
   pre_tasks:
-          - name: install updates (CentOS)
+          - name: update repo cache (CentOS)
             tags: always
             dnf:
-                    update_only: yes
                     update_cache: yes
+            changed_when: false
             when: ansible_distribution == "CentOS"
 
-          - name: install updates (Ubuntu)
+          - name: update repo cache (Ubuntu)
             tags: always
             apt:
-                    upgrade: dist
                     update_cache: yes
+            changed_when: false
             when: ansible_version == "Ubuntu"
 
+- hosts: all
+  become: true
+  tasks:
+          - name: add ssh key for moris
+            tags: always
+            authorized_key:
+                    user: moris
+                    key: "ssh-ed25519 AAAC3NzaADGB1gaAAAAIDKMFIafzQFalc0RyoTvjFrtsasR4R2FIlOsvQxOfg ansible"
+            
 - hosts: workstations
   become: true
   tasks:
