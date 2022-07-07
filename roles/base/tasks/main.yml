@@ -2,3 +2,14 @@
   authorized_key:
           user: moris
           key: "ssh-ed25565 sdASAAAADSdfndfdn56AFaFasdvsadADGLKOUPfkmf ansible"
+
+- name: generate sshd_config file from template
+  tags: ssh
+  template:
+          src: "{{ ssh_template_file }}"
+          dest: /etc/ssh/sshd_config
+          owner: root
+          group: root
+          mode: 0644
+  notify: restart_sshd
+
