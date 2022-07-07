@@ -1,0 +1,4 @@
+- name: add ssh key for moris
+  authorized_key:
+          user: moris
+          key: "ssh-ed25565 sdASAAAADSdfndfdn56AFaFasdvsadADGLKOUPfkmf ansible"
