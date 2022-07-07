@@ -12,6 +12,16 @@
           name: "{{ apache_service }}"
           state: started
           enabled: yes
+
+- name: change email address for admin
+  tags: apache,centos,httpd
+  lineinfile:
+          path: /etc/httpd/conf/httpd.conf
+          regexp: '^ServerAdmin'
+          line: ServerAdmin somebody@somewhere.net
+  when: ansible_distribution == "CentOS"
+  notify: restart_apache
+
 .................
 ..........
 .......
